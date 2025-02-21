@@ -21,6 +21,7 @@ async function submitRecipientDetails(page, account_name, account_number, ifsc_c
     const isErrorVisible = await page.locator(error).isVisible();
     if (isErrorVisible) {
       console.log('Error encountered. Retrying with next account...');
+      await page.screenshot({ path: `screenshots/error_${account_name}.png` });
       return false;
     }
   }
@@ -48,6 +49,7 @@ async function verifyAndConfirmRecipient(page, expected_name) {
       const duplicateAccountError = await page.locator('//*[contains(text(),"Bank account number already exist")]').isVisible();
       if (duplicateAccountError) {
         console.log('Duplicate account error after confirming. Retrying with next account...');
+        await page.screenshot({ path: `screenshots/duplicate_error_${expected_name}.png` });
         return false;  // Stop further execution for this account and retry with next account
       }
 
@@ -55,6 +57,7 @@ async function verifyAndConfirmRecipient(page, expected_name) {
       await expect(page.locator('//*[contains(text(),"Recipient added successfully!")]')).toBeVisible();
       await expect(page.locator('//p[contains(text(),"Recipient List")]')).toBeVisible();
       console.log('Recipient added successfully.');
+      await page.screenshot({ path: `screenshots/success_${expected_name}.png` });
       return true;  // Successfully added recipient
     } else {
       console.log(`Name mismatch: Expected ${expected_name}, but found ${displayedName}`);

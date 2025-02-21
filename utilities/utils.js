@@ -6,6 +6,7 @@ async function login(page) {
   await page.fill('//input[@name="password"]', 'Qw#1erty');
   await page.click('//button[contains(text(),"Log in")]');
   await page.waitForURL('https://scopex.money/Dashboard');
+  await page.screenshot({ path: 'screenshots/login.png' });
 }
 
 async function logout(page) {
@@ -13,6 +14,7 @@ async function logout(page) {
   await page.click('//a[contains(text(),"Log out")]');
   await page.waitForTimeout(2000);
   await expect(page.locator('//a[@href="/Login"]')).toBeVisible();
+  await page.screenshot({ path: 'screenshots/logout.png' });
 }
 
 module.exports = { login, logout };
