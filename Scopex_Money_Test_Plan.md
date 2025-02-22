@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 211b99e (Added Bugs)
 # Manual Test Plan for Scopex Money
 
 ## Test Environment
@@ -9,7 +12,12 @@
 The following functionalities of Scopex Money will be tested:
 1. User Registration
 2. Adding a Recipient
+<<<<<<< HEAD
 3. Logout
+=======
+3. Deleting a Recipient
+4. Logout
+>>>>>>> 211b99e (Added Bugs)
 
 ### Test Environment Setup
 - **Browsers**: Chrome, Firefox, Edge (latest versions)
@@ -65,7 +73,29 @@ https://www.licmf.com/assets/pdfs/LIST-OF-ALL-BANK-DETAILS-UPDATED26112019.pdf
      - Expected: "IFSC should be 11 characters long and the 5th character should be 0."
    - Test duplicate nickname or duplicate recipient name for separate accounts.
 
+<<<<<<< HEAD
 ### Test Scenario 3: Logout
+=======
+### Test Scenario 3: Delete Recipient
+1. **Objective**: Ensure a user can delete a recipient successfully.
+2. **Prerequisite**: User should be logged in and have at least one recipient added.
+3. **Steps**:
+   - Verify that the user is on the dashboard.
+   - Click and expand 'Recipients' from the side tab.
+   - Click 'Recipient List'.
+   - Click the 'Delete' button next to a recipient.
+   - Confirm the deletion by clicking 'Yes'.
+4. **Expected Outcome**:
+   - On successful deletion, "You have successfully deleted recipient!" message appears.
+   - The recipient list page no longer shows the deleted recipient.
+5. **Edge Cases**:
+   - Attempt to delete a recipient that does not exist.
+     - Expected: Appropriate error message.
+   - Test deletion with invalid recipient details.
+     - Expected: Error messages specific to the invalid field.
+
+### Test Scenario 4: Logout
+>>>>>>> 211b99e (Added Bugs)
 1. **Objective**: Ensure that logout functions correctly.
 2. **Steps**:
    - Click the profile icon on the top-right corner.
@@ -123,7 +153,12 @@ https://www.licmf.com/assets/pdfs/LIST-OF-ALL-BANK-DETAILS-UPDATED26112019.pdf
 ### Acceptance Criteria:
 1. User registration completes successfully, and the user lands on the dashboard.
 2. Recipients can be added and displayed in the recipient list without duplicates.
+<<<<<<< HEAD
 3. Logout works correctly, redirecting the user to the login page.
+=======
+3. Recipients can be deleted successfully.
+4. Logout works correctly, redirecting the user to the login page.
+>>>>>>> 211b99e (Added Bugs)
 
 ---
 
@@ -133,3 +168,7 @@ https://www.licmf.com/assets/pdfs/LIST-OF-ALL-BANK-DETAILS-UPDATED26112019.pdf
 - **Responsiveness**: Validate the application's usability on mobile devices.
 - **Error Handling**: Verify that appropriate error messages are shown for invalid inputs.
 
+<<<<<<< HEAD
+=======
+---
+>>>>>>> 211b99e (Added Bugs)
