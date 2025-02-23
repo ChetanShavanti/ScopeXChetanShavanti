@@ -10,12 +10,12 @@ test('Delete All Recipients', async ({ page }) => {
 
   // Step 2: Navigate to the recipients list page
   await page.goto('https://scopex.money/Recipient-List');
+  await page.waitForSelector('//p[contains(text(),"Recipient List")]');
+
+  
 
   // Step 3: Delete all recipients
   const recipientsDeleted = await deleteAllRecipients(page);
-
-  // Step 4: Log out
-  await logout(page);
 
   // Exit if no recipients were found
   if (!recipientsDeleted) {

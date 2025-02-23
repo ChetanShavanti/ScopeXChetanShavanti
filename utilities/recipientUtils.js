@@ -9,7 +9,13 @@ async function submitRecipientDetails(page, account_name, account_number, ifsc_c
   await page.fill('//input[@name="ifsc_code"]', ifsc_code);
   await page.click('//*[@type="submit"]');
   
-  await page.waitForTimeout(5000);
+  // Wait for either the confirmation or any of the error messages to appear
+  await Promise.race([
+    page.waitForSelector('//*[contains(text(),"Confirm recipient details")]'),
+    page.waitForSelector('//*[contains(text(),"Recipient with same bank account number already exists.")]'),
+    page.waitForSelector('//*[contains(text(),"Bank account not found please provide correct bank credentials")]'),
+    page.waitForSelector('//*[contains(text(),"Bank account number already exist")]')
+  ]);
 
   const errors = [
     '//*[contains(text(),"Recipient with same bank account number already exists.")]',
@@ -66,15 +72,15 @@ async function verifyAndConfirmRecipient(page, expected_name) {
   return false;
 }
 
-// Function to add recipients from CSV data with retries
-async function addRecipientsFromCSV(page) {
+// Function to add a single recipient from CSV data
+async function addRecipientFromCSV(page) {
   // Read account data from CSV
   const accountData = await getAccountData();
 
-  // Add recipient from CSV data with retries
-  for (let i = 0; i < accountData.length; i++) {
-    const { account_name, account_number, ifsc_code } = accountData[i];
-    console.log(`Attempt ${i + 1}: Adding account ${account_name}`);
+  // Add only the first recipient from CSV data
+  if (accountData.length > 0) {
+    const { account_name, account_number, ifsc_code } = accountData[0];
+    console.log(`Adding account ${account_name}`);
 
     // Open the "Add Recipient" page
     await page.goto('https://scopex.money/Add-Recipient');
@@ -90,11 +96,11 @@ async function addRecipientsFromCSV(page) {
         }
       }
 
-      if (i === 3) {
-        console.log('Waiting for 4 minutes after 4 failed attempts...');
-        await page.waitForTimeout(240000); // Wait for 4 minutes (240,000 ms)
-      }
+      console.log('Waiting for 4 minutes after a failed attempt...');
+      await page.waitForTimeout(240000); // Wait for 4 minutes (240,000 ms)
     }
+  } else {
+    console.log('No account data found in CSV.');
   }
 }
 
@@ -132,6 +138,10 @@ async function deleteAllRecipients(page) {
 
       // Wait for 1 second
       await page.waitForTimeout(1000);
+
+      // Refresh the page and wait for it to load fully
+      await page.reload();
+      await page.waitForSelector('//p[contains(text(),"Recipient List")]');
     }
 
     // Move to the next page if there are more pages
@@ -143,4 +153,4 @@ async function deleteAllRecipients(page) {
   return true;
 }
 
-module.exports = { submitRecipientDetails, verifyAndConfirmRecipient, addRecipientsFromCSV, deleteAllRecipients };
+module.exports = { submitRecipientDetails, verifyAndConfirmRecipient, addRecipientFromCSV, deleteAllRecipients };
